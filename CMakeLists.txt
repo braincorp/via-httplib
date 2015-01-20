@@ -54,6 +54,6 @@ if(Boost_FOUND)
     via/http/response_status.cpp
   )
 
-  install(PROGRAMS ${VIA_HTTPLIB_LIBRARY_NAME}
+  install(TARGETS ${VIA_HTTPLIB_LIBRARY_NAME}
     DESTINATION bin)
 endif()
