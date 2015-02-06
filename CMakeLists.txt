@@ -10,50 +10,35 @@ project (VIA-HTTPLIB)
 option( VIA_HTTPLIB_BUILD_SHARED_LIBS "Build via-httplib as shared libraries." OFF )
 option( VIA_HTTPLIB_BUILD_TESTS "Build the unit tests." ON )
 
-if(VIA_HTTPLIB_BUILD_SHARED_LIBS)
-  set(Boost_USE_STATIC_LIBS OFF)
-  set( VIA_HTTPLIB_LIBRARY_TYPE SHARED )
-else()
-  set(Boost_USE_STATIC_LIBS ON)
-  set( VIA_HTTPLIB_LIBRARY_TYPE STATIC )
-endif()
+set( VIA_HTTPLIB_LIBRARY_TYPE STATIC )
 set( VIA_HTTPLIB_LIBRARY_NAME via-httplib )
 
-set(Boost_USE_MULTITHREADED ON)
-if(VIA_HTTPLIB_BUILD_TESTS)
-  set(Boost_COMPONENTS system thread regex )
-else()
-  set(Boost_COMPONENTS system thread regex )
-endif()
-
-find_package( Boost 1.51.0 REQUIRED ${Boost_COMPONENTS} )
-find_package( OpenSSL )
-find_package( Threads )
+find_package(OpenSSL)
+find_package(Threads)
 
 if (OPENSSL_FOUND)
     add_definitions(-DBOOST_NETWORK_ENABLE_HTTPS)
 endif()
 
-if(Boost_FOUND)
-  if (MSVC)
-    add_definitions(-D_SCL_SECURE_NO_WARNINGS)
-  endif(MSVC)
-  if (WIN32)
-    add_definitions(-D_WIN32_WINNT=0x0501)
-  endif(WIN32)
-  include_directories(${Boost_INCLUDE_DIRS})
+if (MSVC)
+  add_definitions(-D_SCL_SECURE_NO_WARNINGS)
+endif(MSVC)
+if (WIN32)
+  add_definitions(-D_WIN32_WINNT=0x0501)
+endif(WIN32)
 
-  add_library( ${VIA_HTTPLIB_LIBRARY_NAME} ${VIA_HTTPLIB_LIBRARY_TYPE}
-    via/http/character.cpp
-    via/http/chunk.cpp
-    via/http/header_field.cpp
-    via/http/headers.cpp
-    via/http/request.cpp
-    via/http/request_method.cpp
-    via/http/response.cpp
-    via/http/response_status.cpp
-  )
+include_directories(${BOOST_INCLUDEDIRS})
 
-  install(TARGETS ${VIA_HTTPLIB_LIBRARY_NAME}
-    DESTINATION bin)
-endif()
+add_library( ${VIA_HTTPLIB_LIBRARY_NAME} ${VIA_HTTPLIB_LIBRARY_TYPE}
+  via/http/character.cpp
+  via/http/chunk.cpp
+  via/http/header_field.cpp
+  via/http/headers.cpp
+  via/http/request.cpp
+  via/http/request_method.cpp
+  via/http/response.cpp
+  via/http/response_status.cpp
+)
+
+install(TARGETS ${VIA_HTTPLIB_LIBRARY_NAME}
+  DESTINATION bin)
