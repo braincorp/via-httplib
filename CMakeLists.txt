@@ -39,6 +39,3 @@ add_library( ${VIA_HTTPLIB_LIBRARY_NAME} ${VIA_HTTPLIB_LIBRARY_TYPE}
   via/http/response.cpp
   via/http/response_status.cpp
 )
-
-install(TARGETS ${VIA_HTTPLIB_LIBRARY_NAME}
-  DESTINATION bin)
